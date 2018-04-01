@@ -87,7 +87,7 @@ porous medium \sep image processing \sep convolutional neural network \sep image
 
 \subsection{Porous medium specs}
 
-\subsection{U-net architecture and features}
+\subsection{Our model}
 
 Key features of U-net architecture:
 \begin{itemize}
@@ -115,21 +115,18 @@ We used Unet architecture  with some small features:
 	
 \end{itemize}
 
-\subsection{Specification of inputs into the neural network}
-
-Our model get $700^3$ image stack as input. Than 2-d images splited into $64 \times 64$ patches with minimal overlapping, so our train data contains 84700 image patches($84700 \times 1 \times 64 \times 64$). Stack contains gray-scale images, so each image pixel's intensity scaled to $[-0.5, 0.5]$ interval. We do not use data augmentation because of data set size.
-
-\begin{figure}[h]
-	\center{
-		\includegraphics[width=1\linewidth]
-			{data/data_pipeline.jpg}
-	}
-	\caption{Trainig pipeline: ToDo}
-	\label{Unet:training}
-\end{figure}
-
 \subsection{Learning process}
 
+We using 2-d image patches for model training. We chose patch size $=64$ and minibatch size $=32$, so out model get 
+float 4-d tensor of size $32 \times 1 \times 64 \times 64$.
+Pixel intensivity scaled to $[-0.5, 0.5]$ interval.
+Model returns probabilities for each pixel, model output has 
+size $4096 \times 2$(besause on the top of model used 
+1-d softmax activation), that output could be reshaped to size $32 \times 2 \times 64 \times 64$.
+
+In each epoch only $\frac{1}{5}$ of minibatches used for training, because our trainig set is large enougth and full processing will be
+very time expensive. We do not use data augmentation for the same reason.
+    
 We used combination of cross-entropy and smoothed IOU as loss function:
 \begin{equation}{\label{Loss}}
 	L(x, y) = \frac{1}{N} 
@@ -146,13 +143,36 @@ with $\varepsilon=10^{-5}$.
 We used Adam optimizer with initial learning rate $=10^{-3}$ and 
 multiplicative learning rate decay to $10^{-5}$ until final epoch.
 
-We choose size of minibatch equals $=32$ and train our model during 10 epochs. We used only $\frac{1}{5}$ randomly choosen part of training patches in each epoch.
-
 \subsection{Experimantal set-up}
+
+We handle image stacks in folowing way:
+\begin{enumerate}
+ 	\item Split each 2-d image to minimal overlapping patches,
+ 	feed patches to our model and get probabilities for each pixel.
+ 	\item Patches with probabilities binarized with some threshold 			so we get 
+ 	segmentation mask that contains our class labels.
+ 	\item 2-d mask for source image is assembled from probabilities 		patches. 
+\end{enumerate}
+\begin{figure}[h]
+	\center{
+		\includegraphics[width=1\linewidth]
+			{data/data_pipeline.jpg}
+	}
+	\caption{Trainig pipeline: ToDo}
+	\label{Unet:training}
+\end{figure}
+
+
 We choose 3 rock types: carbonate, soil and sanstone. We have 
 4 carbonate, 4 soil and 3 sandstone stacks. We choose one of stacks from each category as trained(carbonate 1, soil 1 and sandstone 1).
 Then we train 3 models on each trained stack independenlty, 3 models on each pair of trained stacks and one model on both trained stacks.
 As result we have 7 models to compare.
+
+Each models have training set  with equal number of images, so 
+models that trained on single stack type get full stack as input,
+models that trained on two stack types get a half of eash stack as input and model that trained on all three stack types get third part
+of stacks.    
+
 We measure different metrics(logloss, IOU, accuracy, precision, recall, PR-AUC) with diffent thresholds on each of 11 stacks.
 
 
