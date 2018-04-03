@@ -1,0 +1,17 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Background and previous works}{}% 2
+\BOOKMARK [1][-]{section.3}{Methodology}{}% 3
+\BOOKMARK [2][-]{subsection.3.1}{Image processing applications for porous medium analysis}{section.3}% 4
+\BOOKMARK [2][-]{subsection.3.2}{Convolutional neural networks for segmentation: breif review and benefits}{section.3}% 5
+\BOOKMARK [2][-]{subsection.3.3}{Classifiers}{section.3}% 6
+\BOOKMARK [1][-]{section.4}{Experiments}{}% 7
+\BOOKMARK [2][-]{subsection.4.1}{Porous medium specs}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.2}{Our model}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.3}{Learning process}{section.4}% 10
+\BOOKMARK [2][-]{subsection.4.4}{Experimantal set-up}{section.4}% 11
+\BOOKMARK [1][-]{section.5}{Results}{}% 12
+\BOOKMARK [2][-]{subsection.5.1}{Segmentation threshold}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.2}{Visual segmentation results}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.3}{Numerical segmentation results}{section.5}% 15
+\BOOKMARK [1][-]{section.6}{Discussion}{}% 16
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 17

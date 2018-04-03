@@ -178,9 +178,90 @@ We measure different metrics(logloss, IOU, accuracy, precision, recall, PR-AUC) 
 
 \section{Results}
 
-\subsection{Classification with and without segmentaion}
+In out experiments we used 6 metrics:
+accuracy measures number of right predicted pixels,
+precision measures number of right predicted positive class pixels relative to number of total emount of predicted positive pixels,s
+logloss is a metric, that takes into account predicted propapiblities of each pixels, recall measures number of right predicted positive class pixels relative to number of total emount 
+of true positive pixels, PR-AUC is area under precission-recall curve, IOU is relation between intersection of predicted and true positive labels and union of predicted and true positive labels.
+We measure 6 metrics for each pair of used model and predicted stack. 
 
-\subsection{Classification of patterns from various media}
+\subsection{Segmentation threshold}
+
+At first, we need to determine probabilty threshold in order to get binary segmentation. It seems to be a dificult task, but we traced the dependence of our metric from thresholds and found wide large plateau on this graphics. So we could take any threshold and get same quality of segmentation.
+
+\begin{figure}[h]
+	\center{
+		\includegraphics[width=1\linewidth]
+			{data/results/SoilB-2_Urna_22_carb96558/precision.jpg}
+	}
+	\caption{Dependency of metrics from threshold}
+	\label{Results:threshold_precision}
+\end{figure}
+
+\begin{figure}[h]
+	\center{
+		\includegraphics[width=1\linewidth]
+			{data/results/SoilB-2_Urna_22_carb96558/iou.jpg}
+	}
+	\caption{Dependency of metrics from threshold}
+	\label{Results:threshold_iou}
+\end{figure}
+
+
+\subsection{Visual segmentation results}
+
+In this section we show visual results of segmentation. 
+As we can see, our model is uncertaion about border pixels, so 
+amount of false-negative error is much more that amount of false-positive error(false-negative pixels are colored in blue, false-positive in red).
+Also there is another artifacts: some models classify bright solid clusters as pores(because there is no such clusters in trainig set of that models).
+
+\begin{figure}[h]
+	\center{
+		\includegraphics[width=1\linewidth]
+			{data/predictions/carb96558/Urna_22jpg.png}
+	}
+	\caption{Model trained on carb96558 and predicts Urna22}
+	\label{Results:visual_bright_cluster}
+\end{figure}
+
+
+\begin{figure}[h]
+	\center{
+		\includegraphics[width=1\linewidth]
+			{data/predictions/carb96558/carbRNFjpg.png}
+	}
+	\caption{Model trained on carb96558 and predicts carbRNF, good prediction}
+	\label{Results:visual_good_carbRNF}
+\end{figure}
+
+\begin{figure}[h]
+	\center{
+		\includegraphics[width=1\linewidth]
+			{data/predictions/SoilB-2/carbRNFjpg.png}
+	}
+	\caption{Model trained on SoilB-2 and predicts carbRNF, bad prediction}
+	\label{Results:visual_bad_carbRNF}
+\end{figure}
+
+\begin{figure}[h]
+	\center{
+		\includegraphics[width=1\linewidth]
+			{data/predictions/carb96558_SoilB-2/Urna_34jpg.png}
+	}
+	\caption{Model trained on carb96558 and SoilB-2 and predicts Urna34, unconfident model}
+	\label{Results:visual_unconfident}
+\end{figure}
+
+\subsection{Numerical segmentation results}
+
+We create large table with measurements, so we could draw some conclusion. 
+
+\begin{itemize}
+	\item Specific models that trained on some stack type shows excelent perfomance on stacks from same type, but could do bad predictions on stacks from another type.
+	\item Aggregate models show good perfomance on all stacks, so 
+their outperform specific models in average, but lose on stacks with type that native for specific model.
+\end{itemize}
+
 
 \section{Discussion}
 Overview of results and applicability of the results.
